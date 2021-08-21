@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend-ing
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/actions.aaa-tg: >
+      {"type":"forward","targetGroupARN": "arn:aws:elasticloadbalancing:eu-west-1:888011373241:targetgroup/aaa/fe193000325bf14d"}
+    alb.ingress.kubernetes.io/actions.bbb-tg: >
+      {"type":"forward","targetGroupARN": "arn:aws:elasticloadbalancing:eu-west-1:888011373241:targetgroup/bbb/4a6a8a2c07aacad1"}
+spec:
+    rules:
+      - host: "*.eu-west-1.elb.amazonaws.com"
+        http:
+          paths:
+          - path: /bbb/index.html
+            backend:
+              serviceName: aaa-tg
+              servicePort: use-annotation
+          - path: /
+            backend:
+              serviceName: frontend-svc
+              servicePort: 80

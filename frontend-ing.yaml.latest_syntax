@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-ing
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/actions.action-1: >
+      {"type":"forward","targetGroupARN": "arn:aws:elasticloadbalancing:eu-west-1:888011373241:targetgroup/bbb/4a6a8a2c07aacad1"}
+spec:
+    rules:
+      - host: "*.eu-west-1.elb.amazonaws.com"
+        http:
+          paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-svc
+                port:
+                  number: 80
+          - path: /bbb
+            pathType: Prefix
+            backend:
+              service:
+                name: action-1
+                port:
+                  name: use-annotation
