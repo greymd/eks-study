@@ -80,3 +80,7 @@ helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller \
 
 kubectl apply -n frontend -f frontend-svc.yaml
 kubectl apply -n frontend -f frontend-ing.yaml
+
+
+## もし ASG の Desired capacity が 0 になったら
+$ eksctl scale nodegroup --region eu-west-1 --cluster test-cluster --name ng-12ddc879 --nodes 2

@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-http-svc
+  namespace: frontend
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - backend:
+          serviceName: frontend-svc
+          servicePort: 80
+        path: /http-svc
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-http-svc2
+  namespace: frontend
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - backend:
+          serviceName: frontend-nginx-svc
+          servicePort: 80
+        path: /http-svc2

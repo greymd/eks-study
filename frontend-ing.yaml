@@ -5,6 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/actions.aaa-tg: >
       {"type":"forward","targetGroupARN": "arn:aws:elasticloadbalancing:eu-west-1:888011373241:targetgroup/aaa/fe193000325bf14d"}
     alb.ingress.kubernetes.io/actions.bbb-tg: >
@@ -14,11 +15,11 @@ spec:
       - host: "*.eu-west-1.elb.amazonaws.com"
         http:
           paths:
-          - path: /bbb/index.html
-            backend:
-              serviceName: aaa-tg
-              servicePort: use-annotation
           - path: /
             backend:
               serviceName: frontend-svc
+              servicePort: 80
+          - path: /nginx/
+            backend:
+              serviceName: frontend-nginx-svc
               servicePort: 80
